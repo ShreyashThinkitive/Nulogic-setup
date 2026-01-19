@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLogout } from "../Hooks/useLogout";
 
 const drawerWidth = 240;
 
@@ -22,9 +23,14 @@ const Dashboard = () => {
   const [open, setOpen] = useState(true);
   const navigate = useNavigate();
 
+  const { mutate: logout } = useLogout();
+
   const handleLogout = () => {
-    localStorage.clear();
-    navigate("/login");
+    logout({
+      headers: {
+        TenantId: localStorage.getItem("TenantId") ?? "",
+      },
+    });
   };
 
   return (
