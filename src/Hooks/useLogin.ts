@@ -1,7 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
 import { postApiAuthLoginMutation } from "../sdk/@tanstack/react-query.gen";
+import { useNavigate } from "react-router-dom";
 
 export const useLogin = () => {
+   const navigate = useNavigate();
 
   return useMutation({
     ...postApiAuthLoginMutation(),
@@ -12,6 +14,8 @@ export const useLogin = () => {
       localStorage.setItem("refreshToken", response.refreshToken);
       localStorage.setItem("userRole", response.userRole);
       localStorage.setItem("userId", String(response.userId));
+
+      navigate("/dashboard", { replace: true });
     },
     onError: (error: any) => {
       console.error("Login failed", error.response?.data);
